@@ -28,36 +28,30 @@ jobs:
 
       - name: Customize App Name and Icon
         run: |
-          # 1. تغيير اسم التطبيق ليظهر بـ Timely على شاشة الهاتف
+          # 1. تغيير اسم التطبيق ليظهر بـ Timely
           sed -i 's/android:label="school_tardiness_app"/android:label="Timely"/g' android/app/src/main/AndroidManifest.xml
           
           # 2. تثبيت مكتبة Pillow
           pip install Pillow
           
-          # 3. رسم أيقونة جرس أنيقة بنية بطابع النود محلياً لتفادي حظر الإنترنت
+          # 3. رسم أيقونة جرس بتناسق الزهري والأخضر المريمي
           python3 -c "
           import os
           from PIL import Image, ImageDraw
 
-          bg_color = (245, 238, 233)
-          bell_color = (115, 82, 65)
-          accent_color = (181, 131, 108)
+          bg_color = (247, 224, 227)   # خلفية زهري ناعم
+          bell_color = (78, 121, 93)   # جرس أخضر مريمي
 
           icon = Image.new('RGBA', (512, 512), bg_color)
           draw = ImageDraw.Draw(icon)
 
-          # رسم حلقة الجرس العلوية
-          draw.ellipse([236, 110, 276, 150], outline=bell_color, width=18)
-          
-          # رسم جسم القبة والجرس
-          draw.pieslice([156, 150, 356, 350], 180, 360, fill=bell_color)
-          draw.rectangle([156, 250, 356, 340], fill=bell_color)
-          draw.ellipse([116, 320, 396, 360], fill=bell_color)
+          # رسم شكل الجرس
+          draw.ellipse([236, 110, 276, 150], outline=bell_color, width=16)
+          draw.chord([156, 160, 356, 360], start=180, end=360, fill=bell_color)
+          draw.rectangle([156, 260, 356, 320], fill=bell_color)
+          draw.rounded_rectangle([136, 310, 376, 340], radius=10, fill=bell_color)
+          draw.ellipse([231, 335, 281, 375], fill=bell_color)
 
-          # رسم لسان الجرس
-          draw.ellipse([231, 355, 281, 405], fill=accent_color)
-
-          # حفظ الأيقونات بالأحجام القياسية لأندرويد
           res_path = 'android/app/src/main/res'
           sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
           for folder, size in sizes.items():
