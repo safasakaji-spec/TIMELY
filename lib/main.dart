@@ -25,12 +25,13 @@ class SchoolApp extends StatelessWidget {
       ],
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFFAF4EE), // خلفية نود كريمية ناعمة
+        // خلفية ناعمة جداً بدرجة زهري ناصع وهادئ
+        scaffoldBackgroundColor: const Color(0xFFFBF7F8),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF8C6B58),
-          primary: const Color(0xFF8C6B58),
-          secondary: const Color(0xFFB5836C),
-          surface: const Color(0xFFFFFDFB),
+          seedColor: const Color(0xFF4E795D), // أخضر مريمي هادئ
+          primary: const Color(0xFF4E795D),
+          secondary: const Color(0xFFD48B97), // زهري وردي ناعم
+          surface: const Color(0xFFFFFFFF),
         ),
         fontFamily: 'Roboto',
       ),
@@ -125,7 +126,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('يرجى إدخال اسم الطالبة واختيار الشعبة'),
-          backgroundColor: Color(0xFF8C6B58),
+          backgroundColor: Color(0xFF4E795D),
         ),
       );
       return;
@@ -170,7 +171,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF8C6B58), // لون نود بني دافئ وأنيق
+          backgroundColor: const Color(0xFF4E795D), // أخضر مريمي أنيق
           elevation: 2,
           toolbarHeight: 125,
           title: Column(
@@ -181,7 +182,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   Icon(Icons.account_balance, color: Color(0xFFF3E5DC), size: 22),
                   SizedBox(width: 8),
                   Text('وزارة التربية والتعليم - المملكة الأردنية الهاشمية',
-                      style: TextStyle(fontSize: 12, color: Color(0xFFF3E5DC))),
+                      style: TextStyle(fontSize: 12, color: Color(0xFFE8F0E9))),
                 ],
               ),
               const SizedBox(height: 6),
@@ -190,14 +191,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               const SizedBox(height: 2),
               Text('سجل التأخير اليومي | مسؤول اللجان: المعلمة الفاضلة ($teacherName)',
-                  style: const TextStyle(fontSize: 12, color: Color(0xFFFFE0D2))),
+                  style: const TextStyle(fontSize: 12, color: Color(0xFFF9D6DC))), // لمسة زهري ناعمة
             ],
           ),
           bottom: const TabBar(
-            indicatorColor: Color(0xFFF4DCD0),
+            indicatorColor: Color(0xFFF4B2BA), // مؤشر التبويب بزهري ناعم
             indicatorWeight: 3,
             labelColor: Colors.white,
-            unselectedLabelColor: Color(0xFFE2C9BC),
+            unselectedLabelColor: Color(0xFFCDE0D2),
             tabs: [
               Tab(icon: Icon(Icons.edit_calendar), text: "التسجيل اليومي"),
               Tab(icon: Icon(Icons.warning_amber_rounded), text: "السجل التراكمي والتنبيهات"),
@@ -214,12 +215,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   Card(
                     color: Colors.white,
                     elevation: 1.5,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: const BorderSide(color: Color(0xFFEAE0E2)),
+                    ),
                     child: ListTile(
-                      leading: const Icon(Icons.calendar_month, color: Color(0xFF8C6B58)),
+                      leading: const Icon(Icons.calendar_month, color: Color(0xFF4E795D)),
                       title: Text('التاريخ المحدد: $formattedSelectedDate',
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Color(0xFF4A3E3D))),
+                              fontWeight: FontWeight.bold, color: Color(0xFF334237))),
                       trailing: TextButton(
                         onPressed: () async {
                           DateTime? picked = await showDatePicker(
@@ -233,7 +237,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           }
                         },
                         child: const Text('تغيير التاريخ',
-                            style: TextStyle(color: Color(0xFFB5836C), fontWeight: FontWeight.bold)),
+                            style: TextStyle(color: Color(0xFFD48B97), fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -241,7 +245,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   Card(
                     color: Colors.white,
                     elevation: 2,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: const BorderSide(color: Color(0xFFEAE0E2)),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(14.0),
                       child: Column(
@@ -250,14 +257,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             controller: _nameController,
                             decoration: InputDecoration(
                               labelText: 'اسم الطالبة الثلاثي/الرباعي',
-                              labelStyle: const TextStyle(color: Color(0xFF7A6863)),
+                              labelStyle: const TextStyle(color: Color(0xFF6B7C70)),
                               filled: true,
-                              fillColor: const Color(0xFFFAF4EE),
+                              fillColor: const Color(0xFFF7F2F3),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Icon(Icons.person_add, color: Color(0xFF8C6B58)),
+                              prefixIcon: const Icon(Icons.person_add, color: Color(0xFF4E795D)),
                             ),
                           ),
                           const SizedBox(height: 12),
@@ -265,14 +272,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             value: selectedClass,
                             decoration: InputDecoration(
                               labelText: 'الصف والشعبة',
-                              labelStyle: const TextStyle(color: Color(0xFF7A6863)),
+                              labelStyle: const TextStyle(color: Color(0xFF6B7C70)),
                               filled: true,
-                              fillColor: const Color(0xFFFAF4EE),
+                              fillColor: const Color(0xFFF7F2F3),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Icon(Icons.class_, color: Color(0xFF8C6B58)),
+                              prefixIcon: const Icon(Icons.class_, color: Color(0xFF4E795D)),
                             ),
                             items: classesList.map((String c) {
                               return DropdownMenuItem<String>(value: c, child: Text(c));
@@ -282,7 +289,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                           const SizedBox(height: 14),
                           ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFB5836C),
+                              backgroundColor: const Color(0xFFD48B97), // زر باللون الزهري الوردي
                               minimumSize: const Size.fromHeight(48),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             ),
@@ -299,14 +306,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   const Align(
                     alignment: Alignment.centerRight,
                     child: Text('قائمة التأخير لهذا اليوم:',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF5A4B4A))),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF334237))),
                   ),
                   const SizedBox(height: 6),
                   Expanded(
                     child: todayRecords.isEmpty
                         ? const Center(
                             child: Text('لا يوجد تسجيلات لهذا اليوم',
-                                style: TextStyle(color: Color(0xFF9E8E8C))))
+                                style: TextStyle(color: Color(0xFF9EA3A0))))
                         : ListView.builder(
                             itemCount: todayRecords.length,
                             itemBuilder: (context, index) {
@@ -317,9 +324,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                 margin: const EdgeInsets.symmetric(vertical: 4),
                                 child: ListTile(
                                   title: Text(item.studentName,
-                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E3D))),
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF334237))),
                                   subtitle: Text('الشعبة: ${item.gradeClass}',
-                                      style: const TextStyle(color: Color(0xFF7A6863))),
+                                      style: const TextStyle(color: Color(0xFF6B7C70))),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -327,9 +334,9 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                         label: Text('المجموع: $totalTimes'),
                                         backgroundColor: totalTimes >= 4
                                             ? const Color(0xFFFADBD8)
-                                            : const Color(0xFFF3E5DC),
+                                            : const Color(0xFFE8F0E9),
                                         labelStyle: TextStyle(
-                                          color: totalTimes >= 4 ? Colors.red[900] : const Color(0xFF5A4B4A),
+                                          color: totalTimes >= 4 ? Colors.red[900] : const Color(0xFF334237),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -356,17 +363,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFDEBD0),
+                      color: const Color(0xFFFADBD8), // تنبيه بالزهري الفاتح
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.info_outline, color: Color(0xFFB9770E)),
+                        Icon(Icons.warning_amber_rounded, color: Color(0xFFC0392B)),
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             'الطالبات المكتوبة باللون الأحمر تجاوزن 4 تأخيرات وتتطلب استدعاء ولي أمر.',
-                            style: TextStyle(fontSize: 13, color: Color(0xFF7E5109)),
+                            style: TextStyle(fontSize: 13, color: Color(0xFF78281F), fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],
@@ -377,7 +384,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                     child: tardinessCounts.isEmpty
                         ? const Center(
                             child: Text('السجل التراكمي فارغ حالياً',
-                                style: TextStyle(color: Color(0xFF9E8E8C))))
+                                style: TextStyle(color: Color(0xFF9EA3A0))))
                         : ListView(
                             children: tardinessCounts.entries.map((entry) {
                               final name = entry.key;
@@ -390,7 +397,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                 child: ListTile(
                                   leading: CircleAvatar(
                                     backgroundColor:
-                                        isCritical ? const Color(0xFFE74C3C) : const Color(0xFFB5836C),
+                                        isCritical ? const Color(0xFFE74C3C) : const Color(0xFF4E795D),
                                     child: Text('$count',
                                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                   ),
@@ -398,13 +405,13 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                     name,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: isCritical ? const Color(0xFF78281F) : const Color(0xFF4A3E3D),
+                                      color: isCritical ? const Color(0xFF78281F) : const Color(0xFF334237),
                                     ),
                                   ),
                                   subtitle: Text(
                                     isCritical ? '⚠️ يتوجب استدعاء ولي الأمر فوراً' : 'تأخير اعتيادي',
                                     style: TextStyle(
-                                        color: isCritical ? const Color(0xFFC0392B) : const Color(0xFF7A6863)),
+                                        color: isCritical ? const Color(0xFFC0392B) : const Color(0xFF6B7C70)),
                                   ),
                                 ),
                               );
