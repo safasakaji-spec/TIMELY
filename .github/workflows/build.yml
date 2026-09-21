@@ -31,22 +31,33 @@ jobs:
           # 1. تغيير اسم التطبيق ليظهر بـ Timely على شاشة الهاتف
           sed -i 's/android:label="school_tardiness_app"/android:label="Timely"/g' android/app/src/main/AndroidManifest.xml
           
-          # 2. تثبيت مكتبة Pillow للتعامل مع الأيقونة
+          # 2. تثبيت مكتبة Pillow
           pip install Pillow
           
-          # 3. إنشاء أيقونة جرس أنيقة بطابع النود
+          # 3. رسم أيقونة جرس أنيقة بنية بطابع النود محلياً لتفادي حظر الإنترنت
           python3 -c "
-          import urllib.request, os
-          from PIL import Image
-
-          url = 'https://api.iconify.design/mdi:bell-ring.png?color=%23735241&width=350&height=350'
-          urllib.request.urlretrieve(url, 'bell.png')
+          import os
+          from PIL import Image, ImageDraw
 
           bg_color = (245, 238, 233)
-          icon = Image.new('RGBA', (512, 512), bg_color)
-          bell = Image.open('bell.png').convert('RGBA')
-          icon.paste(bell, (81, 81), bell)
+          bell_color = (115, 82, 65)
+          accent_color = (181, 131, 108)
 
+          icon = Image.new('RGBA', (512, 512), bg_color)
+          draw = ImageDraw.Draw(icon)
+
+          # رسم حلقة الجرس العلوية
+          draw.ellipse([236, 110, 276, 150], outline=bell_color, width=18)
+          
+          # رسم جسم القبة والجرس
+          draw.pieslice([156, 150, 356, 350], 180, 360, fill=bell_color)
+          draw.rectangle([156, 250, 356, 340], fill=bell_color)
+          draw.ellipse([116, 320, 396, 360], fill=bell_color)
+
+          # رسم لسان الجرس
+          draw.ellipse([231, 355, 281, 405], fill=accent_color)
+
+          # حفظ الأيقونات بالأحجام القياسية لأندرويد
           res_path = 'android/app/src/main/res'
           sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
           for folder, size in sizes.items():
