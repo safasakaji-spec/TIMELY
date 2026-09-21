@@ -23,6 +23,10 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
+      # خطوة تلقائية لإنشاء ملفات الأندرويد و Gradle الناقصة
+      - name: Generate Android Project Files
+        run: flutter create . --platforms=android --org com.school.app
+
       - name: Install Dependencies
         run: flutter pub get
 
