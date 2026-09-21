@@ -26,6 +26,35 @@ jobs:
       - name: Generate Android Project Files
         run: flutter create . --platforms=android --org com.school.app --project-name school_tardiness_app
 
+      - name: Customize App Name and Icon
+        run: |
+          # 1. تغيير اسم التطبيق ليظهر بـ Timely على شاشة الهاتف
+          sed -i 's/android:label="school_tardiness_app"/android:label="Timely"/g' android/app/src/main/AndroidManifest.xml
+          
+          # 2. إنشاء أيقونة جرس أنيقة بطابع النود تلقائياً
+          python3 -c "
+          import urllib.request, os
+          from PIL import Image
+
+          # تنزيل رسمة جرس أنيقة
+          url = 'https://api.iconify.design/mdi:bell-ring.png?color=%23735241&width=350&height=350'
+          urllib.request.urlretrieve(url, 'bell.png')
+
+          # تصميم الأيقونة بخلفية نود ناعمة
+          bg_color = (245, 238, 233)
+          icon = Image.new('RGBA', (512, 512), bg_color)
+          bell = Image.open('bell.png').convert('RGBA')
+          icon.paste(bell, (81, 81), bell)
+
+          res_path = 'android/app/src/main/res'
+          sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
+          for folder, size in sizes.items():
+              dir_p = os.path.join(res_path, folder)
+              os.makedirs(dir_p, exist_ok=True)
+              resized = icon.resize((size, size), Image.Resampling.LANCZOS)
+              resized.save(os.path.join(dir_p, 'ic_launcher.png'), 'PNG')
+          "
+
       - name: Install Dependencies
         run: flutter pub get
 
@@ -35,5 +64,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: School-System-App
+          name: Timely-App
           path: build/app/outputs/flutter-apk/app-release.apk
