@@ -31,16 +31,17 @@ jobs:
           # 1. تغيير اسم التطبيق ليظهر بـ Timely على شاشة الهاتف
           sed -i 's/android:label="school_tardiness_app"/android:label="Timely"/g' android/app/src/main/AndroidManifest.xml
           
-          # 2. إنشاء أيقونة جرس أنيقة بطابع النود تلقائياً
+          # 2. تثبيت مكتبة Pillow للتعامل مع الأيقونة
+          pip install Pillow
+          
+          # 3. إنشاء أيقونة جرس أنيقة بطابع النود
           python3 -c "
           import urllib.request, os
           from PIL import Image
 
-          # تنزيل رسمة جرس أنيقة
           url = 'https://api.iconify.design/mdi:bell-ring.png?color=%23735241&width=350&height=350'
           urllib.request.urlretrieve(url, 'bell.png')
 
-          # تصميم الأيقونة بخلفية نود ناعمة
           bg_color = (245, 238, 233)
           icon = Image.new('RGBA', (512, 512), bg_color)
           bell = Image.open('bell.png').convert('RGBA')
