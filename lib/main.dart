@@ -14,7 +14,7 @@ class SchoolApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'نظام متابعة التأخير',
+      title: 'Timely',
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar', 'JO'),
       supportedLocales: const [Locale('ar', 'JO')],
@@ -24,9 +24,15 @@ class SchoolApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFFAF4EE), // خلفية نود كريمية ناعمة
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF8C6B58),
+          primary: const Color(0xFF8C6B58),
+          secondary: const Color(0xFFB5836C),
+          surface: const Color(0xFFFFFDFB),
+        ),
         fontFamily: 'Roboto',
-        scaffoldBackgroundColor: const Color(0xFFF6F8FA),
       ),
       home: const MainHomeScreen(),
     );
@@ -71,12 +77,11 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   DateTime selectedDate = DateTime.now();
   String schoolName = "المدرسة الثانوية الشاملة";
-  String teacherName = "المعلمة الفاضلة (لجنة النظام)";
+  String teacherName = "مروة سكجي";
   
   List<LateRecord> allRecords = [];
   final _nameController = TextEditingController();
   
-  // قائمة الشعب والصفوف حسب طلبك
   final List<String> classesList = [
     'سابع (أ)', 'سابع (ب)', 'سابع (ج)',
     'ثامن (أ)', 'ثامن (ب)', 'ثامن (ج)',
@@ -118,7 +123,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   void _addRecord() {
     if (_nameController.text.trim().isEmpty || selectedClass == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال اسم الطالبة واختيار الشعبة')),
+        const SnackBar(
+          content: Text('يرجى إدخال اسم الطالبة واختيار الشعبة'),
+          backgroundColor: Color(0xFF8C6B58),
+        ),
       );
       return;
     }
@@ -144,7 +152,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     _saveData();
   }
 
-  // حساب عدد مرات التأخير لكل طالبة
   Map<String, int> get tardinessCounts {
     Map<String, int> counts = {};
     for (var record in allRecords) {
@@ -163,28 +170,34 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.teal[800],
-          toolbarHeight: 120,
+          backgroundColor: const Color(0xFF8C6B58), // لون نود بني دافئ وأنيق
+          elevation: 2,
+          toolbarHeight: 125,
           title: Column(
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.account_balance, color: Colors.amber, size: 28),
-                  const SizedBox(width: 8),
-                  const Text('وزارة التربية والتعليم - المملكة الأردنية الهاشمية',
-                      style: TextStyle(fontSize: 13, color: Colors.white70)),
+                  Icon(Icons.account_balance, color: Color(0xFFF3E5DC), size: 22),
+                  SizedBox(width: 8),
+                  Text('وزارة التربية والتعليم - المملكة الأردنية الهاشمية',
+                      style: TextStyle(fontSize: 12, color: Color(0xFFF3E5DC))),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(schoolName,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-              Text('سجل التأخير اليومي | مسؤول اللجان: $teacherName',
-                  style: const TextStyle(fontSize: 12, color: Colors.amberAccent)),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+              const SizedBox(height: 2),
+              Text('سجل التأخير اليومي | مسؤول اللجان: المعلمة الفاضلة ($teacherName)',
+                  style: const TextStyle(fontSize: 12, color: Color(0xFFFFE0D2))),
             ],
           ),
           bottom: const TabBar(
-            indicatorColor: Colors.amber,
+            indicatorColor: Color(0xFFF4DCD0),
+            indicatorWeight: 3,
+            labelColor: Colors.white,
+            unselectedLabelColor: Color(0xFFE2C9BC),
             tabs: [
               Tab(icon: Icon(Icons.edit_calendar), text: "التسجيل اليومي"),
               Tab(icon: Icon(Icons.warning_amber_rounded), text: "السجل التراكمي والتنبيهات"),
@@ -193,18 +206,20 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         ),
         body: TabBarView(
           children: [
-            // الشاشة الأولى: التسجيل اليومي والرزنامة
+            // الشاشة الأولى: التسجيل اليومي
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  // اختيار التاريخ
                   Card(
-                    elevation: 2,
+                    color: Colors.white,
+                    elevation: 1.5,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: ListTile(
-                      leading: const Icon(Icons.calendar_month, color: Colors.teal),
+                      leading: const Icon(Icons.calendar_month, color: Color(0xFF8C6B58)),
                       title: Text('التاريخ المحدد: $formattedSelectedDate',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Color(0xFF4A3E3D))),
                       trailing: TextButton(
                         onPressed: () async {
                           DateTime? picked = await showDatePicker(
@@ -217,84 +232,109 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             setState(() => selectedDate = picked);
                           }
                         },
-                        child: const Text('تغيير التاريخ'),
+                        child: const Text('تغيير التاريخ',
+                            style: TextStyle(color: Color(0xFFB5836C), fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  // نموذج إضافة طالبة
                   Card(
-                    elevation: 3,
+                    color: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(14.0),
                       child: Column(
                         children: [
                           TextField(
                             controller: _nameController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'اسم الطالبة الثلاثي/الرباعي',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.person_add),
+                              labelStyle: const TextStyle(color: Color(0xFF7A6863)),
+                              filled: true,
+                              fillColor: const Color(0xFFFAF4EE),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              prefixIcon: const Icon(Icons.person_add, color: Color(0xFF8C6B58)),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 12),
                           DropdownButtonFormField<String>(
                             value: selectedClass,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               labelText: 'الصف والشعبة',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.class_),
+                              labelStyle: const TextStyle(color: Color(0xFF7A6863)),
+                              filled: true,
+                              fillColor: const Color(0xFFFAF4EE),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              prefixIcon: const Icon(Icons.class_, color: Color(0xFF8C6B58)),
                             ),
                             items: classesList.map((String c) {
                               return DropdownMenuItem<String>(value: c, child: Text(c));
                             }).toList(),
                             onChanged: (val) => setState(() => selectedClass = val),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 14),
                           ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal[700],
-                              minimumSize: const Size.fromHeight(45),
+                              backgroundColor: const Color(0xFFB5836C),
+                              minimumSize: const Size.fromHeight(48),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             ),
                             onPressed: _addRecord,
                             icon: const Icon(Icons.check, color: Colors.white),
                             label: const Text('تسجيل التأخير اليوم',
-                                style: TextStyle(color: Colors.white, fontSize: 16)),
+                                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   const Align(
                     alignment: Alignment.centerRight,
                     child: Text('قائمة التأخير لهذا اليوم:',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF5A4B4A))),
                   ),
+                  const SizedBox(height: 6),
                   Expanded(
                     child: todayRecords.isEmpty
-                        ? const Center(child: Text('لا يوجد تسجيلات لهذا اليوم'))
+                        ? const Center(
+                            child: Text('لا يوجد تسجيلات لهذا اليوم',
+                                style: TextStyle(color: Color(0xFF9E8E8C))))
                         : ListView.builder(
                             itemCount: todayRecords.length,
                             itemBuilder: (context, index) {
                               final item = todayRecords[index];
                               int totalTimes = tardinessCounts[item.studentName] ?? 0;
                               return Card(
+                                color: Colors.white,
+                                margin: const EdgeInsets.symmetric(vertical: 4),
                                 child: ListTile(
                                   title: Text(item.studentName,
-                                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  subtitle: Text('الشعبة: ${item.gradeClass}'),
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A3E3D))),
+                                  subtitle: Text('الشعبة: ${item.gradeClass}',
+                                      style: const TextStyle(color: Color(0xFF7A6863))),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Chip(
                                         label: Text('المجموع: $totalTimes'),
                                         backgroundColor: totalTimes >= 4
-                                            ? Colors.red[100]
-                                            : Colors.teal[50],
+                                            ? const Color(0xFFFADBD8)
+                                            : const Color(0xFFF3E5DC),
+                                        labelStyle: TextStyle(
+                                          color: totalTimes >= 4 ? Colors.red[900] : const Color(0xFF5A4B4A),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        icon: const Icon(Icons.delete_outline, color: Color(0xFFC0392B)),
                                         onPressed: () => _deleteRecord(item.id),
                                       ),
                                     ],
@@ -308,31 +348,36 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               ),
             ),
 
-            // الشاشة الثانية: السجل التراكمي وتنبيه الـ 4 غيابات/تأخيرات
+            // الشاشة الثانية: السجل التراكمي
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Container(
                     padding: const EdgeInsets.all(12),
-                    color: Colors.amber[100],
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFDEBD0),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: const Row(
                       children: [
-                        Icon(Icons.info, color: Colors.brown),
+                        Icon(Icons.info_outline, color: Color(0xFFB9770E)),
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             'الطالبات المكتوبة باللون الأحمر تجاوزن 4 تأخيرات وتتطلب استدعاء ولي أمر.',
-                            style: TextStyle(fontSize: 13),
+                            style: TextStyle(fontSize: 13, color: Color(0xFF7E5109)),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   Expanded(
                     child: tardinessCounts.isEmpty
-                        ? const Center(child: Text('السجل التراكمي فارغ حالياً'))
+                        ? const Center(
+                            child: Text('السجل التراكمي فارغ حالياً',
+                                style: TextStyle(color: Color(0xFF9E8E8C))))
                         : ListView(
                             children: tardinessCounts.entries.map((entry) {
                               final name = entry.key;
@@ -340,26 +385,26 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                               final isCritical = count >= 4;
 
                               return Card(
-                                color: isCritical ? Colors.red[50] : Colors.white,
+                                color: isCritical ? const Color(0xFFFDEDEC) : Colors.white,
+                                margin: const EdgeInsets.symmetric(vertical: 4),
                                 child: ListTile(
                                   leading: CircleAvatar(
-                                    backgroundColor: isCritical ? Colors.red : Colors.teal,
+                                    backgroundColor:
+                                        isCritical ? const Color(0xFFE74C3C) : const Color(0xFFB5836C),
                                     child: Text('$count',
-                                        style: const TextStyle(color: Colors.white)),
+                                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                   ),
                                   title: Text(
                                     name,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: isCritical ? Colors.red[900] : Colors.black,
+                                      color: isCritical ? const Color(0xFF78281F) : const Color(0xFF4A3E3D),
                                     ),
                                   ),
                                   subtitle: Text(
-                                    isCritical
-                                        ? '⚠️ يتوجب استدعاء ولي الأمر فوراً'
-                                        : 'تأخير منتظم',
+                                    isCritical ? '⚠️ يتوجب استدعاء ولي الأمر فوراً' : 'تأخير اعتيادي',
                                     style: TextStyle(
-                                        color: isCritical ? Colors.red : Colors.grey[700]),
+                                        color: isCritical ? const Color(0xFFC0392B) : const Color(0xFF7A6863)),
                                   ),
                                 ),
                               );
